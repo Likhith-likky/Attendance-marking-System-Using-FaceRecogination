@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Webpage Design</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script>
+    <!-- ...Other Firebase libraries you need... -->
+</head>
+
+<body>
+   
+
+    <div class="main">
+        <div class="navbar">
+            <div class="icon">
+
+                <!-- <h2 class="logo">Attendance System</h2> -->
+            </div>
+
+            <!-- <h1><span>Attendance Marking System</span></h1> -->
+
+        </div>
+        <div class="content">
+
+            
+            <h1><span>Attendance Marking <br>System</span></h1><br><br>
+            <img src="images/image.png" alt="My Image"><br><br>
+            <!-- <img src="lpulogo.png" alt="My Image"> -->
+            <p class="par">Welcome to the Attendance Marking System! Our system <br> provides an easy and efficient way
+                for instructors to keep <br> track of attendance for their classes. </p>
+
+            <!-- <button class="cn"><a href="#">Sign Up</a></button> -->
+
+            <div class="form">
+
+                <h2>Login Here</h2>
+                <!-- action="action_page.php" method="post" -->
+                
+                    <div class="container">
+                        <!-- <form id="loginForm" onsubmit="login(event)"></form>
+
+
+                        <input type="email" placeholder="Email" id="loginEmail" name="email" required>
+                        <input type="password" placeholder="Enter Password" id="loginPassword" name="password" required>
+                        <button class="btnn" name="login" type="submit">Login</button>
+
+                        </form> -->
+                        <form id="loginForm" onsubmit="login(event)">
+                            <input type="email" id="loginEmail" placeholder="Email" required>
+                            <input type="password" id="loginPassword" placeholder="Password" required>
+                            <button class="btnn" type="submit">Login</button>
+                        </form>
+
+
+
+                    </div>
+                <!-- <input type="email" name="email" placeholder="Enter Email Here" required>
+                    <input type="password" name="password" placeholder="Enter Password Here" required>
+                     -->
+                <!-- <button  type="submit" class="btnn"onclick="window.location.href='dashboard.html'" >Log In</button> -->
+
+
+                <p class="link">Don't have an account<br><br>
+                    <a href="signup.html">Sign up </a> here</a>
+                </p>
+                <!-- <p class="liw">Log in with</p> -->
+
+                <div class="icons">
+
+                    <a href="#"><ion-icon name="logo-google"></ion-icon></a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    
+
+
+<script>
+   
+
+    // Initialize Firebase
+    const firebaseConfig = {
+            apiKey: "AIzaSyBPeMp7n8z2MuVoAMUZ0N6RyuY8uwZd3J8",
+            authDomain: "faceattendacerealtime-ed9c2.firebaseapp.com",
+            databaseURL:
+                "https://faceattendacerealtime-ed9c2-default-rtdb.firebaseio.com",
+            projectId: "faceattendacerealtime-ed9c2",
+            storageBucket: "faceattendacerealtime-ed9c2.appspot.com",
+            messagingSenderId: "966036857818",
+            appId: "1:966036857818:web:6295dd0354b16c7087d6e3",
+            measurementId: "G-8NKFKYYPVP",
+        };
+
+
+    firebase.initializeApp(firebaseConfig);
+
+    // Get a reference to the Firebase Realtime Database
+    const database = firebase.database();
+
+    // Function to log in
+    function login(event) {
+        event.preventDefault();
+        // const username =document.getElementById("username").value
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(() => {
+                // document.getElementById("message").textContent = "Logged in successfully!";
+                // fetchSigninDetails();
+                // var userName = email.split('@')[0];
+                // alert( " Signed in successfully!");
+                window.location.href = "dashboard.html";
+
+                
+            })
+            .catch((error) => {
+                //document.getElementById("message").textContent = "Login error: " + error.message;
+                alert("Login error: " + error.message)
+            });
+    }
+
+    // Function to sign up
+    function signup(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
+
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Get the user ID
+                const userId = userCredential.user.uid;
+
+                // Store the signup details in the database
+                database.ref("users/" + userId).set({
+                    email: email
+                });
+
+                //document.getElementById("message").textContent = "Signed up successfully!";
+                alert("Signed up successfully!");
+                // window.location.href = "abc.html";
+            })
+            .catch((error) => {
+                //document.getElementById("message").textContent = "Signup error: " + error.message;
+                alert("Signup error: " + error.message)
+            });
+    }
+
+    // Function to fetch sign-in details
+    function fetchSigninDetails() {
+        const signinList = document.getElementById("signinList");
+
+        // Retrieve all users from the database
+        database.ref("users").once("value")
+            .then((snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    const user = childSnapshot.val();
+                    const email = user.email;
+
+                    // Create a list item and append the email to the list
+                    const listItem = document.createElement("li");
+                    listItem.textContent = email;
+                    signinList.appendChild(listItem);
+                });
+            })
+            .catch((error) => {
+                console.log("Fetch error: " + error.message);
+            });
+    }
+
+
+</script>
+<!-- <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script> -->
+
+
+</body>
+
+</html>
